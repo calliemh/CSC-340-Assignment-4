@@ -26,8 +26,8 @@ public class SkateboardService {
         return sRepo.findAll();
     }
 
-    public Skateboard findByType(String type) {
-        return sRepo.findOneByType(type);
+    public Skateboard findById(long id) {
+        return sRepo.getReferenceById(id);
     }
 
     /**

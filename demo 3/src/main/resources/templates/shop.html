@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>SkateShop | Shop</title>
 
+    <script>
+        function openForm() {
+            document.querySelector('.form-wrapper').style = 'display: block!important;';
+        }
+
+        function closeForm() {
+            document.querySelector('.form-wrapper').style = 'display: none!important;';
+        }
+    </script>
+
     <style>
         .blurb-wrapper {
             position: absolute;
@@ -23,21 +33,88 @@
             justify-content: space-evenly;
             align-content: center;
         }
+
+        .form-wrapper {
+            display: none!important;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+
+            z-index: 1000;
+
+            background: rgba(0,0,0,0.6);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-wrapper form {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            height: 25vh;
+            width: 25vh;
+
+            border-radius: 20%;
+
+            background: rgba(255,255,255,0.8);
+        }
+
+        form input {
+            margin: 2%;
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/static">Home</a>
+    <a href="/">Home</a>
     <a href="/shop">Shop</a>
 </nav>
 
-<span class="blurb-wrapper" th:each="skateboard : ${skateboardList}">
-  <a th:text="Type ${skateboard.getType()}" th:href="@{/skateboard/id={type}(type=${skateboard.type})}"></a>
-  <p th:text="Brand ${skateboard.getBrand()}"></p>
-  <p th:text="ID ${skateboard.getId()}" th:hf></p>
-  <p th:text="Price ${skateboard.getPrice()}" th:hf></p>
+<button onclick="openForm()" style="position: fixed; z-index: 999;">Create</button>
+
+<span class="form-wrapper">
+<form action="/create" method="POST">
+    <input type="number" name="price" placeholder="Price" required>
+    <input type="text" name="brand" placeholder="Brand" required>
+    <input type="text" name="type" placeholder="Type" required>
+    <input type="submit" value="Create">
+    <button onclick="closeForm()">Cancel</button>
+</form>
 </span>
+
+<table class="blurb-wrapper">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Brand</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+<tbody th:each="skateboard : ${skateboardList}">
+<tr>
+    <td>  <a th:text="${skateboard.getId()}" th:href="@{/skateboard/id={id}(id=${skateboard.getId()})}"></a></td>
+    <td th:text="${skateboard.getType()}">
+    </td>
+    <td th:text="${skateboard.getBrand()}"></td>
+    <td th:text="${skateboard.getPrice()}"></td>
+</tr>
+</tbody>
+</table>
 
 </body>
 </html>
